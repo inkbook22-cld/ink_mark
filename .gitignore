@@ -1,0 +1,12 @@
+node_modules/
+dist/
+out/
+.DS_Store
+
+# 검증 스크립트 출력물 — 실제 API 응답 이미지가 들어가므로 커밋 금지
+scripts/out/
+
+# API 키는 절대 커밋하지 않는다. OS 보안 저장소(Electron safeStorage)를 쓰고,
+# 개발 중 임시 확인은 환경변수로만 한다.
+.env
+.env.*

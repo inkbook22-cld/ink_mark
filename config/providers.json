@@ -1,0 +1,42 @@
+{
+  "_comment": "모델 ID·단가·기본 품질은 소스에 하드코딩하지 않는다. 이미지 모델은 6~12개월 주기로 은퇴하고, 이 앱은 설치형이라 코드가 사용자 PC에 박혀 있기 때문이다. 이 파일은 앱 업데이트와 별개로 갱신 가능해야 한다.",
+  "schemaVersion": 1,
+  "updatedAt": "2026-09-17",
+  "text": {
+    "default": "openai",
+    "openai": {
+      "model": "gpt-5",
+      "endpoint": "https://api.openai.com/v1/responses",
+      "structuredOutput": true
+    }
+  },
+  "image": {
+    "default": "openai",
+    "openai": {
+      "model": "gpt-image-2",
+      "endpoint": "https://api.openai.com/v1/images/generations",
+      "quality": "medium",
+      "_qualityNote": "한글 문구는 앱이 직접 합성하므로 모델은 배경·분위기만 만들면 된다. high는 장당 4배를 내고 얻는 것이 거의 없다.",
+      "size": "1024x1536",
+      "_sizeNote": "카드 목표는 1080x1350(4:5). 네이티브 세로 프리셋이 2:3이라 크롭이 필요할 수 있다. scripts/verify-providers.mjs 의 T2가 1088x1360(4:5, 16의 배수) 커스텀 해상도가 통하는지 실측한다. 통하면 size를 1088x1360으로 바꾸고 Sharp로 1080x1350 다운스케일만 한다.",
+      "retiredModels": {
+        "gpt-image-1": "2026-10-23",
+        "gpt-image-1.5": "2026-12-01",
+        "gpt-image-1-mini": "2026-12-01"
+      }
+    },
+    "gemini": {
+      "model": "gemini-2.5-flash-image",
+      "endpoint": "https://generativelanguage.googleapis.com/v1beta/models",
+      "_note": "대체 공급자. 자동 전환하지 않는다. OpenAI 403(조직 미인증) 등으로 막혔을 때 사용자가 수동으로 고른다."
+    }
+  },
+  "pricing": {
+    "_comment": "추정치 전용. 공급자 청구액과 일치하지 않으며, 화면에 항상 그 사실을 병기한다. 2026-09 공개 자료 기준이므로 착수 전 공식 가격표로 재확인할 것.",
+    "currency": "USD",
+    "image": {
+      "gpt-image-2": { "low": 0.006, "medium": 0.041, "high": 0.165 },
+      "gemini-2.5-flash-image": { "default": 0.039 }
+    }
+  }
+}

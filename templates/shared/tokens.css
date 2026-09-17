@@ -1,0 +1,71 @@
+/*
+ * 브랜드 토큰. BrandProfile 값이 런타임에 이 변수로 주입된다.
+ * 템플릿은 색·폰트를 직접 쓰지 않고 항상 변수를 경유한다.
+ */
+:root {
+  --brand-primary: #2f4f3e;
+  --brand-accent: #c8794a;
+  --brand-ink: #1c1b19;
+  --brand-paper: #faf7f2;
+  --brand-muted: #6b6560;
+
+  --font-sans: 'Pretendard', system-ui, sans-serif;
+
+  --card-w: 1080px;
+  --card-h: 1350px;
+  --gutter: 72px;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 400;
+  font-display: block; /* swap 금지: 폴백 폰트로 캡처되는 사고를 막는다 */
+  src: url('../fonts/Pretendard-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 600;
+  font-display: block;
+  src: url('../fonts/Pretendard-SemiBold.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 800;
+  font-display: block;
+  src: url('../fonts/Pretendard-ExtraBold.woff2') format('woff2');
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* 카드 한 장 = 정확히 1080x1350. 캡처 창 크기와 1:1로 맞춘다. */
+.stage {
+  width: var(--card-w);
+  height: var(--card-h);
+  overflow: hidden;
+  position: relative;
+  background: var(--brand-paper);
+  font-family: var(--font-sans);
+  color: var(--brand-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+/*
+ * 한글 조판의 핵심 두 줄.
+ * keep-all  : 어절(단어) 단위로 줄을 끊는다. 한글에서 이게 없으면 단어 중간이 잘린다.
+ * break-word: 그래도 한 어절이 줄 너비를 넘으면(긴 브랜드명 등) 강제로 끊는다.
+ */
+.ko {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  line-height: 1.45;
+}
+
+/* 넘칠 때 말줄임. 잘림 검사(data-overflow)와 함께 쓴다. */
+.clamp {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* 검사에서 잘림이 잡힌 요소를 미리보기에서만 빨갛게 표시한다. 캡처 시에는 숨긴다. */
+body.preview [data-overflow='true'] { outline: 3px solid #e5484d; outline-offset: 4px; }
