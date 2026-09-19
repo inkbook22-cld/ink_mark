@@ -40,6 +40,13 @@ await page.goto(pathToFileURL(template).href);
 
 // 폰트·이미지가 준비될 때까지 기다린 뒤에 찍는다. 이 한 줄이 빈 PNG 사고를 막는다.
 const ready = await page.evaluate(() => window.__inkReady);
+if (!ready) {
+  await browser.close();
+  throw new Error(
+    'window.__inkReady 가 없다. 템플릿 스크립트가 로드되지 않았다는 뜻이다.\n' +
+    'ES 모듈(type="module")은 file:// 에서 CORS 로 차단된다 — 일반 스크립트를 쓸 것.',
+  );
+}
 
 await page.locator('#stage').screenshot({ path: outPath });
 await browser.close();

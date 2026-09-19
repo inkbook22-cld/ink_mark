@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>후기형 카드</title>
+<link rel="stylesheet" href="../shared/tokens.css">
+<style>
+  .stage { background: var(--brand-paper); display: grid;
+           grid-template-rows: auto 1fr auto; padding: var(--gutter); }
+  .quote { font-size: 140px; font-weight: 800; line-height: .8; color: var(--brand-accent); opacity: .35; }
+  .middle { display: flex; flex-direction: column; justify-content: center; gap: 48px; }
+  .headline { font-size: 60px; font-weight: 600; line-height: 1.5; color: var(--brand-ink); -webkit-line-clamp: 6; }
+  .who { display: flex; align-items: center; gap: 24px; }
+  /* 후기 작성자 사진. 없으면 브랜드색 원이 남는다 */
+  .who .avatar { width: 88px; height: 88px; border-radius: 50%; object-fit: cover;
+                 background: var(--brand-primary); flex: none; }
+  .who .name { font-size: 30px; font-weight: 600; color: var(--brand-muted); }
+  .bottom { display: flex; align-items: center; justify-content: space-between; }
+  .bottom .eyebrow { font-size: 26px; font-weight: 600; color: var(--brand-muted); }
+  .bottom .pager { font-size: 26px; font-weight: 600; color: var(--brand-muted); opacity: .7; }
+  .bottom img.logo { height: 44px; width: auto; }
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <div class="quote">&ldquo;</div>
+  <div class="middle">
+    <div class="headline ko clamp" id="headline"></div>
+    <div class="who">
+      <img class="avatar" id="photo" alt="">
+      <div class="name ko" id="body"></div>
+    </div>
+  </div>
+  <div class="bottom">
+    <div class="eyebrow ko" id="eyebrow"></div>
+    <div class="pager" id="pager"></div>
+    <img class="logo" id="logo" alt="" hidden>
+  </div>
+</div>
+<script src="../shared/card-runtime.js"></script>
+<script>
+mountCard({
+  eyebrow: '손님 후기',
+  pager: '6 / 7',
+  headline: '아침에 갓 구운 빵 냄새가 골목까지 퍼져요. 일부러 돌아서 출근합니다.',
+  body: '단골 손님',
+  tokens: {},
+});
+</script>
+</body>
+</html>

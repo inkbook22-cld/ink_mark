@@ -5,9 +5,11 @@
   "type": "module",
   "description": "INK 마케팅 스튜디오 — 블로그·인스타 콘텐츠 제작",
   "scripts": {
+    "generate": "node scripts/generate.mjs",
     "verify:providers": "node scripts/verify-providers.mjs",
     "render:card": "node scripts/render-card.mjs",
     "naver:draft": "node scripts/naver-draft.mjs",
+    "test": "node --test --test-concurrency=1 \"tests/**/*.test.mjs\"",
     "test:typing": "node scripts/test-naver-typing.mjs"
   },
   "dependencies": {

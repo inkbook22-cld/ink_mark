@@ -1,0 +1,12 @@
+{
+  "name": "이음 베이커리",
+  "audience": "동네에 사는 30~40대, 아침 출근길에 빵을 사는 사람",
+  "contact": "문의 · 프로필 링크",
+  "colors": { "primary": "#2f4f3e", "accent": "#c8794a", "ink": "#1c1b19", "paper": "#faf7f2" },
+  "toneExamples": [
+    "매일 아침 여섯 시에 반죽을 시작합니다.",
+    "오늘 구운 것만 팝니다. 남으면 내일 팔지 않습니다."
+  ],
+  "bannedWords": ["최고", "1등", "무조건"],
+  "channels": { "naverBlogId": "", "instagram": "" }
+}

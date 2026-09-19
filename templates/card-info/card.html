@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>정보형 카드</title>
+<link rel="stylesheet" href="../shared/tokens.css">
+<style>
+  .stage { background: var(--brand-primary); color: #fff; display: grid;
+           grid-template-rows: auto 1fr auto; padding: var(--gutter); }
+  .top { display: flex; align-items: center; justify-content: space-between; }
+  .eyebrow { font-size: 30px; font-weight: 600; color: var(--brand-accent); }
+  .pager { font-size: 28px; font-weight: 600; opacity: .6; }
+  .middle { display: flex; flex-direction: column; justify-content: center; gap: 40px; }
+  .headline { font-size: 82px; font-weight: 800; line-height: 1.25; -webkit-line-clamp: 4; }
+  /* 제목과 본문 사이 구분선 — 정보형은 위계가 분명해야 읽힌다 */
+  .rule { width: 120px; height: 6px; background: var(--brand-accent); border-radius: 3px; }
+  .body { font-size: 36px; font-weight: 400; opacity: .88; -webkit-line-clamp: 4; }
+  .bottom { display: flex; align-items: center; justify-content: space-between; opacity: .75; }
+  .bottom .contact { font-size: 26px; }
+  .bottom img.logo { height: 48px; width: auto; }
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <div class="top">
+    <div class="eyebrow ko" id="eyebrow"></div>
+    <div class="pager" id="pager"></div>
+  </div>
+  <div class="middle">
+    <div class="headline ko clamp" id="headline"></div>
+    <div class="rule"></div>
+    <div class="body ko clamp" id="body"></div>
+  </div>
+  <div class="bottom">
+    <div class="contact ko" id="contact"></div>
+    <img class="logo" id="logo" alt="" hidden>
+  </div>
+</div>
+<script src="../shared/card-runtime.js"></script>
+<script>
+mountCard({
+  eyebrow: '알아두면 좋은 것',
+  pager: '4 / 7',
+  headline: '발효는 열두 시간, 굽는 시간은 스물다섯 분입니다',
+  body: '반죽은 매일 아침 여섯 시에 시작합니다. 당일 구운 빵만 판매합니다.',
+  contact: '문의 · 프로필 링크',
+  tokens: {},
+});
+</script>
+</body>
+</html>
