@@ -1,0 +1,19 @@
+{
+  "name": "ink-mark",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "INK 마케팅 스튜디오 — 블로그·인스타 콘텐츠 제작",
+  "scripts": {
+    "verify:providers": "node scripts/verify-providers.mjs",
+    "render:card": "node scripts/render-card.mjs",
+    "naver:draft": "node scripts/naver-draft.mjs",
+    "test:typing": "node scripts/test-naver-typing.mjs"
+  },
+  "dependencies": {
+    "playwright": "^1.56.1"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

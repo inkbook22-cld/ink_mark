@@ -11,6 +11,8 @@ config/providers.json          모델 ID·단가·품질. 소스 하드코딩 �
 scripts/verify-providers.mjs   1단계 연동 검증 — MVP 전제가 성립하는지 확인
 scripts/render-card.mjs        템플릿 렌더 테스트 하네스 (Electron 없이 CI용)
 templates/                     카드 템플릿. 합성은 HTML/CSS 단일 경로 (D2)
+src/publish/naver/             블로그 임시저장. 붙여넣기 대신 타이핑한다
+scripts/naver-draft.mjs        임시저장 CLI
 docs/decisions.md              확정된 결정과 근거
 ```
 
@@ -41,6 +43,19 @@ FAIL이 하나라도 있으면 2단계로 넘어가기 전에 전제를 고친�
 node scripts/render-card.mjs
 # → scripts/out/card-preview.png, 글자 잘림 목록
 ```
+
+## 네이버 임시저장
+
+```bash
+node scripts/naver-draft.mjs --blog-id myblog --title "제목" --file 원고.md
+npm run test:typing            # 로컬 목업 대상 회귀 테스트
+```
+
+본문은 붙여넣지 않고 타이핑한다. 이유와 한계는
+[`src/publish/naver/README.md`](src/publish/naver/README.md).
+
+셀렉터는 `src/publish/naver/profile.json` 에 모여 있고 아직 실측되지 않았다
+(`verifiedAt: null`). 실제 계정으로 한 번 통과시킨 뒤 날짜를 기록할 것.
 
 ## 키 취급
 

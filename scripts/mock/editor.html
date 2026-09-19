@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>네이버 에디터 목업</title>
+<style>html,body{margin:0;height:100%} iframe{border:0;width:100%;height:100%}</style></head>
+<body>
+  <!-- 실제 네이버처럼 에디터를 iframe 안에 둔다. frameLocator 경로를 그대로 검증하기 위함이다. -->
+  <iframe id="mainFrame" src="./editor-inner.html"></iframe>
+<script>
+  // ?restore=1 이면 저장된 글을 복원한 상태로 연다 (검증 단계 재현)
+  const p = new URLSearchParams(location.search);
+  if (p.get('restore') === '1') document.getElementById('mainFrame').src = './editor-inner.html?restore=1';
+</script>
+</body></html>

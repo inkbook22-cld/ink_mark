@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<style>
+  body { font-family: system-ui, sans-serif; margin: 0; padding: 24px; }
+  .se-title-text { border-bottom: 2px solid #ddd; padding: 8px 0; margin-bottom: 16px; }
+  .se-title-text .se-text-paragraph { font-size: 28px; font-weight: 700; outline: none; min-height: 40px; }
+  .se-main-container { min-height: 300px; outline: none; font-size: 16px; line-height: 1.8; }
+  .se-main-container p { margin: 0 0 12px; }
+  .se-main-container img { max-width: 320px; display: block; margin: 12px 0; }
+  .toolbar { position: fixed; top: 0; right: 0; padding: 12px; background: #fff; border-left: 1px solid #eee; }
+  button { display: block; margin-bottom: 8px; }
+  .list_saved { list-style: none; padding: 0; }
+</style></head>
+<body>
+  <!-- 실제 스마트에디터 ONE 의 구조를 흉내 낸 목업. 클래스 이름을 profile.json 과 맞춘다. -->
+  <div class="se-title-text"><div class="se-text-paragraph" contenteditable="true"></div></div>
+  <div class="se-main-container" contenteditable="true"><p class="se-text-paragraph"><br></p></div>
+
+  <div class="toolbar">
+    <button data-name="image">사진</button>
+    <button class="btn_save">저장</button>
+    <button class="btn_save_list">저장 목록</button>
+    <ul class="list_saved" hidden></ul>
+  </div>
+  <input type="file" id="picker" accept="image/*" hidden>
+
+<script>
+const $ = (s) => document.querySelector(s);
+const titleEl = $('.se-title-text .se-text-paragraph');
+const bodyEl  = $('.se-main-container');
+
+// 저장된 임시글 복원 — 검증 단계(다시 열어 확인)를 재현하기 위해 필요하다
+const saved = JSON.parse(localStorage.getItem('mockDraft') || 'null');
+if (saved && new URLSearchParams(location.search).get('restore') === '1') {
+  titleEl.textContent = saved.title;
+  bodyEl.innerHTML = saved.body;
+}
+
+$('[data-name="image"]').addEventListener('click', () => $('#picker').click());
+$('#picker').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const img = document.createElement('img');
+  img.src = URL.createObjectURL(file);
+  img.alt = file.name;
+  bodyEl.appendChild(img);
+});
+
+$('.btn_save').addEventListener('click', () => {
+  localStorage.setItem('mockDraft', JSON.stringify({
+    title: titleEl.textContent,
+    body: bodyEl.innerHTML,
+    at: Date.now(),
+  }));
+  $('.btn_save').textContent = '저장됨';
+});
+
+$('.btn_save_list').addEventListener('click', () => {
+  const ul = $('.list_saved');
+  ul.hidden = false;
+  ul.innerHTML = '';
+  const d = JSON.parse(localStorage.getItem('mockDraft') || 'null');
+  if (d) { const li = document.createElement('li'); li.textContent = d.title; ul.appendChild(li); }
+});
+</script>
+</body></html>

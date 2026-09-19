@@ -1,0 +1,37 @@
+{
+  "_comment": "네이버 화면 셀렉터. 코드에 박지 않고 여기 모아둔다(D1). 네이버가 DOM을 바꾸면 앱 재배포 없이 이 파일만 갱신한다. verifiedAt 이 오래됐으면 먼저 의심할 것.",
+  "schemaVersion": 1,
+  "verifiedAt": null,
+  "_verifiedAtNote": "실제 네이버에서 한 번이라도 통과한 날짜를 기록한다. null = 미검증.",
+
+  "urls": {
+    "login": "https://nid.naver.com/nidlogin.login",
+    "write": "https://blog.naver.com/{blogId}/postwrite",
+    "drafts": "https://blog.naver.com/{blogId}/postwrite"
+  },
+
+  "editorFrame": "iframe#mainFrame",
+
+  "selectors": {
+    "loginCheck": ".gnb_my_namebox, .MyView-module__my_menu___",
+    "titleInput": ".se-title-text .se-text-paragraph, .se-documentTitle .se-text-paragraph",
+    "bodyArea": ".se-main-container",
+    "bodyFirstParagraph": ".se-main-container .se-text-paragraph",
+    "photoButton": "button.se-image-toolbar-button, button[data-name='image']",
+    "saveButton": "button.save_btn__bzc5B, .btn_save",
+    "draftListButton": ".btn_save_list, button[class*='draft']",
+    "draftListItems": ".list_saved li, [class*='draft'] li",
+    "publishButton": "button.publish_btn__m9KHH",
+    "templateDialog": ".se-popup-container",
+    "templateDialogClose": ".se-popup-close-button, button.se-popup-button-cancel",
+    "helpDialogClose": ".se-help-panel-close-button, button[class*='close']"
+  },
+
+  "timing": {
+    "_comment": "타이핑 속도. 너무 빠르면 에디터가 입력을 놓치고, 너무 느리면 한 편에 몇 분이 걸린다.",
+    "typeDelayMs": 12,
+    "paragraphPauseMs": 120,
+    "editorReadyTimeoutMs": 30000,
+    "saveTimeoutMs": 20000
+  }
+}
