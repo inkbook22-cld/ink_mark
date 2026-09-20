@@ -53,9 +53,7 @@ const image = useMock
     ? new GeminiImageProvider({ apiKey: process.env.GEMINI_API_KEY, config })
     : new OpenAIProvider({ apiKey: process.env.OPENAI_API_KEY, config });
 
-const capture = await createPlaywrightCapture(
-  process.env.PW_CHROMIUM ? { executablePath: process.env.PW_CHROMIUM } : {},
-);
+const capture = await createPlaywrightCapture();
 
 let result;
 try {

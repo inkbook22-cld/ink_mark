@@ -14,15 +14,10 @@
 
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
-import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { chromium } from 'playwright';
 import { saveDraft, loadProfile } from '../src/publish/naver/uploader.mjs';
-
-const require = createRequire(import.meta.url);
-let chromium;
-try { ({ chromium } = require('playwright')); }
-catch { ({ chromium } = require('/opt/node22/lib/node_modules/playwright')); }
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const MOCK = path.join(ROOT, 'scripts/mock');
@@ -59,7 +54,9 @@ const MARKDOWN = `
 - 매주 월요일 휴무
 `.trim();
 
-const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' });
+const browser = await chromium.launch(
+  process.env.INK_CHROMIUM ? { executablePath: process.env.INK_CHROMIUM } : {},
+);
 const page = await browser.newPage({ viewport: { width: 1440, height: 960 }, locale: 'ko-KR' });
 
 const steps = [];

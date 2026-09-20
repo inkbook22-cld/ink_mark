@@ -19,6 +19,14 @@ export class MockProvider {
   async generateContent({ brand, brief }) {
     const n = brief.cardCount ?? this.cardCount;
     const topic = (brief.source || '').split('\n').find((l) => l.trim()) || '새 소식';
+    // 어절 중간에서 자르면 예시 데이터가 망가진 것처럼 보인다. 실제 모델은
+    // 길이 제한을 지켜 쓰므로, 모의 데이터도 같은 모양이어야 화면 검토가 된다.
+    const clip = (s, max) => {
+      if (s.length <= max) return s;
+      const cut = s.slice(0, max);
+      const at = cut.lastIndexOf(' ');
+      return (at > max * 0.5 ? cut.slice(0, at) : cut).replace(/[,·]$/, '');
+    };
 
     return {
       model: 'mock-text',
@@ -28,9 +36,9 @@ export class MockProvider {
         // 모의 공급자도 누락 정보를 비워두지 않는다. 검사 로직이 이 경로를 타야 한다.
         missingInfo: brief.source ? [] : ['가격', '영업시간', '주소'],
         blog: {
-          title: `${brand.name} · ${topic.slice(0, 24)}`,
+          title: `${brand.name} · ${clip(topic, 24)}`,
           sections: Array.from({ length: 3 }, (_, i) => ({
-            heading: `${i + 1}. ${topic.slice(0, 18)} 이야기`,
+            heading: `${i + 1}. ${clip(topic, 18)} 이야기`,
             paragraphs: [
               `${brand.name}의 이야기를 정리했습니다. 확인된 내용만 적었습니다.`,
               '자세한 내용은 아래 사진과 함께 보시면 이해가 쉽습니다.',
@@ -46,7 +54,7 @@ export class MockProvider {
           cards: Array.from({ length: n }, (_, i) => ({
             design: i === 0 ? 'photo' : i % 3 === 2 ? 'review' : 'info',
             eyebrow: i === 0 ? '새 소식' : `${i + 1}단계`,
-            headline: i === 0 ? topic.slice(0, 34) : `${topic.slice(0, 18)}에 대해 알아둘 것 ${i}`,
+            headline: i === 0 ? clip(topic, 34) : `${clip(topic, 16)}에 대해 알아둘 것 ${i}`,
             body: '확인된 내용만 담았습니다. 문의는 프로필 링크로 남겨주세요.',
             photoPrompt: `A soft, warm photograph for ${topic}, shallow depth of field. No text, no letters.`,
           })),

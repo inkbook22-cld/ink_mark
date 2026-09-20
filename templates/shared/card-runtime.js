@@ -8,7 +8,12 @@
  * 앱은 템플릿을 로컬 파일로 열기 때문에 모듈로 만들면 캡처가 통째로 실패한다.
  */
 window.mountCard = function mountCard(defaults) {
-  const data = window.__inkData ?? defaults;
+  // 데이터는 두 경로로 들어온다.
+  //   1) window.__inkData  — Playwright 가 스크립트 실행 전에 심는 경로(테스트·CI)
+  //   2) location.hash     — Electron 이 loadURL 로 넘기는 경로(제품)
+  // 둘 다 페이지 스크립트가 도는 시점에 이미 읽을 수 있어야 한다. 로드 후에 심으면
+  // 이 함수는 이미 기본값으로 렌더를 끝낸 뒤다.
+  const data = window.__inkData ?? readHashData() ?? defaults;
 
   for (const [k, v] of Object.entries(data.tokens ?? {})) {
     document.documentElement.style.setProperty(`--${k}`, v);
@@ -25,13 +30,40 @@ window.mountCard = function mountCard(defaults) {
   const logo = document.getElementById('logo');
   if (logo && data.logo) { logo.src = data.logo; logo.hidden = false; }
 
-  /** 렌더 시점에 실제 높이를 재서 잘림을 확정 판정한다. */
+  /**
+   * 렌더 시점에 실제 높이를 재서 잘림을 확정 판정한다.
+   *
+   * -webkit-line-clamp 로 자른 경우 scrollHeight 가 clientHeight 와 같아져서
+   * 단순 비교로는 잡히지 않는다. 그래서 클램프를 잠시 풀고 본래 높이를 잰 뒤
+   * 되돌린다. 캡처는 이 함수가 끝난 뒤에 하므로 화면에는 영향이 없다.
+   */
   function findOverflow() {
     const clipped = [];
     for (const el of document.querySelectorAll('.clamp, .ko')) {
-      const over = el.scrollHeight > el.clientHeight + 1 || el.scrollWidth > el.clientWidth + 1;
+      const limit = el.clientHeight;
+      let natural = el.scrollHeight;
+
+      const style = getComputedStyle(el);
+      if (style.webkitLineClamp && style.webkitLineClamp !== 'none') {
+        const prevClamp = el.style.webkitLineClamp;
+        const prevOverflow = el.style.overflow;
+        el.style.webkitLineClamp = 'unset';
+        el.style.overflow = 'visible';
+        natural = el.scrollHeight; // 여기서 강제 리플로우가 일어난다
+        el.style.webkitLineClamp = prevClamp;
+        el.style.overflow = prevOverflow;
+      }
+
+      const over = natural > limit + 1 || el.scrollWidth > el.clientWidth + 1;
       el.dataset.overflow = String(over);
-      if (over) clipped.push({ id: el.id, text: el.textContent.trim().slice(0, 40) });
+      if (over) {
+        clipped.push({
+          id: el.id,
+          text: el.textContent.trim().slice(0, 40),
+          naturalHeight: natural,
+          limitHeight: limit,
+        });
+      }
     }
     return clipped;
   }
@@ -49,3 +81,12 @@ window.mountCard = function mountCard(defaults) {
     return { ok: true, overflow: findOverflow(), width: 1080, height: 1350 };
   })();
 };
+
+function readHashData() {
+  if (location.hash.length < 2) return null;
+  try {
+    return JSON.parse(decodeURIComponent(location.hash.slice(1)));
+  } catch {
+    return null;
+  }
+}

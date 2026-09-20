@@ -75,13 +75,10 @@ export function brandTokens(brand) {
  * 브라우저를 한 번 띄워 카드 전부를 찍는다 — 장당 띄우면 7장에 수십 초가 더 든다.
  */
 export async function createPlaywrightCapture({ executablePath } = {}) {
-  const { createRequire } = await import('node:module');
-  const require = createRequire(import.meta.url);
-  let chromium;
-  try { ({ chromium } = require('playwright')); }
-  catch { ({ chromium } = require('/opt/node22/lib/node_modules/playwright')); }
-
-  const browser = await chromium.launch(executablePath ? { executablePath } : {});
+  const { chromium } = await import('playwright');
+  // INK_CHROMIUM 은 브라우저가 기본 경로에 없는 환경(CI 이미지 등)을 위한 탈출구다.
+  const exe = executablePath ?? process.env.INK_CHROMIUM;
+  const browser = await chromium.launch(exe ? { executablePath: exe } : {});
 
   const capture = async ({ templateUrl, data, width, height }) => {
     const page = await browser.newPage({ viewport: { width, height }, deviceScaleFactor: 1 });

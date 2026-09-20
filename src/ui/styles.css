@@ -1,0 +1,105 @@
+:root {
+  --paper: #faf7f2;
+  --ink: #1c1b19;
+  --muted: #6b6560;
+  --line: #e4ded4;
+  --primary: #2f4f3e;
+  --accent: #c8794a;
+  --danger: #b4463f;
+  --warn: #9a6b1e;
+  --radius: 10px;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.6;
+  word-break: keep-all;
+}
+
+.app { display: grid; grid-template-columns: 210px 1fr; min-height: 100vh; }
+
+/* ── 사이드바 ─────────────────────────────────────────── */
+.side { background: var(--primary); color: #fff; padding: 24px 16px; display: flex; flex-direction: column; gap: 4px; }
+.side h1 { font-size: 16px; font-weight: 700; margin-bottom: 20px; letter-spacing: -.01em; }
+.side button {
+  all: unset; padding: 10px 12px; border-radius: 8px; cursor: pointer;
+  font-size: 14px; color: rgba(255,255,255,.72);
+}
+.side button:hover { background: rgba(255,255,255,.08); color: #fff; }
+.side button[aria-current='true'] { background: rgba(255,255,255,.16); color: #fff; font-weight: 600; }
+.side .spacer { flex: 1; }
+.side .note { font-size: 12px; color: rgba(255,255,255,.55); line-height: 1.5; }
+
+/* ── 본문 ─────────────────────────────────────────────── */
+main { padding: 32px 36px 64px; max-width: 1000px; }
+h2 { font-size: 22px; font-weight: 700; margin-bottom: 6px; letter-spacing: -.01em; }
+.sub { color: var(--muted); margin-bottom: 24px; }
+section { margin-bottom: 32px; }
+h3 { font-size: 15px; font-weight: 600; margin-bottom: 10px; }
+
+label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+input[type='text'], input[type='password'], input[type='number'], textarea, select {
+  width: 100%; padding: 9px 11px; border: 1px solid var(--line); border-radius: 8px;
+  background: #fff; font: inherit; color: inherit;
+}
+textarea { resize: vertical; min-height: 120px; line-height: 1.7; }
+input:focus, textarea:focus, select:focus { outline: 2px solid var(--primary); outline-offset: -1px; }
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+.field { margin-bottom: 14px; }
+.hint { font-size: 12px; color: var(--muted); margin-top: 5px; }
+
+button.btn {
+  all: unset; padding: 9px 16px; border-radius: 8px; cursor: pointer;
+  font-weight: 600; font-size: 14px; background: var(--primary); color: #fff;
+}
+button.btn:hover { filter: brightness(1.12); }
+button.btn[disabled] { opacity: .45; cursor: not-allowed; }
+button.btn.ghost { background: transparent; color: var(--primary); border: 1px solid var(--line); }
+button.btn.ghost:hover { background: #fff; }
+.btnrow { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+
+.card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; }
+.banner { padding: 12px 14px; border-radius: 8px; font-size: 13px; margin-bottom: 18px; }
+.banner.info { background: #eef3ef; color: var(--primary); }
+.banner.warn { background: #fdf4e3; color: var(--warn); }
+.banner.error { background: #fbecea; color: var(--danger); }
+
+/* ── 재생성 (D4) ──────────────────────────────────────── */
+.regen { display: flex; gap: 20px; flex-wrap: wrap; }
+.regen .opt { flex: 1; min-width: 260px; border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; background: #fff; }
+.regen .opt h4 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+/* 무엇이 유지되는지 버튼 옆에 항상 보여준다 — 안 보이면 사용자가 버튼을 안 누른다 */
+.regen .keeps { font-size: 12px; color: var(--muted); margin: 8px 0 12px; min-height: 32px; }
+
+/* ── 카드 미리보기 ────────────────────────────────────── */
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; }
+.cards figure { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: #fff; }
+.cards img { width: 100%; display: block; aspect-ratio: 4/5; object-fit: cover; }
+.cards figcaption { padding: 8px 10px; font-size: 12px; color: var(--muted); }
+
+/* 사용자가 고친 필드는 잠겼다는 표시를 단다 */
+.locked { display: inline-block; font-size: 11px; font-weight: 600; color: var(--accent); margin-left: 6px; }
+
+.issues { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+.issues li { font-size: 13px; padding-left: 62px; position: relative; }
+.issues .tag {
+  position: absolute; left: 0; top: 1px; font-size: 11px; font-weight: 700;
+  padding: 1px 7px; border-radius: 4px; width: 52px; text-align: center;
+}
+.issues .error .tag { background: #fbecea; color: var(--danger); }
+.issues .warn .tag { background: #fdf4e3; color: var(--warn); }
+.issues .info .tag { background: #eef3ef; color: var(--primary); }
+.issues .where { color: var(--muted); }
+
+.progress { position: fixed; right: 24px; bottom: 24px; background: var(--ink); color: #fff;
+            padding: 11px 16px; border-radius: 8px; font-size: 13px; max-width: 380px; }
+
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--line); }
+th { color: var(--muted); font-weight: 600; }

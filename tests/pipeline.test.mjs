@@ -22,9 +22,7 @@ const config = JSON.parse(await readFile(new URL('../config/providers.json', imp
 const brand = JSON.parse(await readFile(new URL('../samples/brand.json', import.meta.url), 'utf8'));
 const brief = { source: '겨울 한정 메뉴를 시작합니다.\n반죽은 매일 아침 여섯 시에 시작합니다.', cardCount: 3 };
 
-const capture = await createPlaywrightCapture(
-  process.env.PW_CHROMIUM ? { executablePath: process.env.PW_CHROMIUM } : {},
-);
+const capture = await createPlaywrightCapture();
 test.after(() => capture.close());
 
 function setup() {

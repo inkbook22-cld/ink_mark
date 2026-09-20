@@ -9,18 +9,10 @@
  * 사용:
  *   node scripts/render-card.mjs [템플릿경로] [출력경로]
  */
-import { createRequire } from 'node:module';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { mkdir } from 'node:fs/promises';
 import path from 'node:path';
-
-const require = createRequire(import.meta.url);
-let chromium;
-try {
-  ({ chromium } = require('playwright'));
-} catch {
-  ({ chromium } = require('/opt/node22/lib/node_modules/playwright'));
-}
+import { chromium } from 'playwright';
 
 const CARD_W = 1080;
 const CARD_H = 1350;
@@ -30,7 +22,9 @@ const outPath = process.argv[3] ?? fileURLToPath(new URL('./out/card-preview.png
 
 await mkdir(path.dirname(outPath), { recursive: true });
 
-const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' });
+const browser = await chromium.launch(
+  process.env.INK_CHROMIUM ? { executablePath: process.env.INK_CHROMIUM } : {},
+);
 const page = await browser.newPage({
   viewport: { width: CARD_W, height: CARD_H },
   deviceScaleFactor: 1,

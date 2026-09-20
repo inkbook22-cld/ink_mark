@@ -37,6 +37,10 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+/* 스크롤바가 생기면 캡처 폭이 줄어 카드가 잘린다. 카드는 정확히 1080x1350 이므로
+   넘칠 일이 없고, 넘친다면 그것 자체가 버그다 — 잘림 검사가 잡는다. */
+html, body { width: 100%; height: 100%; overflow: hidden; }
+
 /* 카드 한 장 = 정확히 1080x1350. 캡처 창 크기와 1:1로 맞춘다. */
 .stage {
   width: var(--card-w);

@@ -10,3 +10,7 @@ scripts/out/
 # 개발 중 임시 확인은 환경변수로만 한다.
 .env
 .env.*
+dist/
+
+# 미리보기·스모크 산출물
+scripts/out/
